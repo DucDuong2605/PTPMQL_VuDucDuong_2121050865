@@ -1,0 +1,11 @@
+@model StudentFacultyViewModel
+@using MvcMovie.ViewModels
+<h2>Xóa sinh viên</h2>
+
+<p>Bạn có chắc muốn xóa?</p>
+
+<p>@Model.FullName - @Model.FacultyName</p>
+
+<form method="post">
+    <button type="submit">Xóa</button>
+</form>

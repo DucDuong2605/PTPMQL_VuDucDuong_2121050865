@@ -1,0 +1,18 @@
+@model Student
+
+<h2>Thêm sinh viên</h2>
+
+<form method="post">
+    <label>Tên:</label>
+    <input asp-for="FullName" />
+
+    <label>Khoa:</label>
+    <select asp-for="FacultyID">
+        @foreach (var f in ViewBag.Faculties)
+        {
+            <option value="@f.FacultyID">@f.FacultyName</option>
+        }
+    </select>
+
+    <button type="submit">Lưu</button>
+</form>
