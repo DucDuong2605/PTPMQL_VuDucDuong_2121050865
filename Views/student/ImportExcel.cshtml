@@ -1,0 +1,7 @@
+ @model MvcMovie.Models.Student
+ <h2> import danh sach excel<h2>
+
+ <form asp-action="ImportExcel" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>

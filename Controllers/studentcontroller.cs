@@ -104,5 +104,42 @@ namespace MvcMovie.Controllers
 
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> ImportExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File không hợp lệ");
+            }
+
+            var students = new List<Student>();
+
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+
+                using (var package = new ExcelPackage(stream))
+                {
+                    var worksheet = package.Workbook.Worksheets[0];
+                    int rowCount = worksheet.Dimension.Rows;
+
+                    for (int row = 2; row <= rowCount; row++) // bỏ header
+                    {
+                        var student = new Student
+                        {
+                            Name = worksheet.Cells[row, 1].Text,
+                            Email = worksheet.Cells[row, 2].Text,
+                            Age = int.Parse(worksheet.Cells[row, 3].Text)
+                        };
+
+                        students.Add(student);
+                    }
+                }
+            }
+
+            await _context.Students.AddRangeAsync(students);
+            await _context.SaveChangesAsync();
+
+            return Ok("Import thành công!");
+        }
     }
 }
